@@ -26,8 +26,3 @@ public class StopCommand implements Command {
         chat = update.getMessage().getChat();
     }
 }
-
-//    @Override
-//    public Long getChatId() {
-//        return chatId;
-//    }

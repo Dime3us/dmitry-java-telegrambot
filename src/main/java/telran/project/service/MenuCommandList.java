@@ -15,8 +15,9 @@ public class MenuCommandList {
             (
                     new BotCommand("/start", "use the command to start the bot"),
                     new BotCommand("/stop", "use the command to stop the bot"),
-                    new BotCommand("/help", "info how to use this bot")
-
+                    new BotCommand("/help", "info how to use this bot"),
+                    new BotCommand("/list", "list of available currencies"),
+                    new BotCommand("/unsubscribe_all", "unsubscribe from all updates")
             );
 
 

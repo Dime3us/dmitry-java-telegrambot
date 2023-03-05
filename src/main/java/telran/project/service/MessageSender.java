@@ -14,19 +14,3 @@ public interface MessageSender {
     void sendMessage(long chatId, String textToSend);
 
 }
-
-//    @Autowired
-//    private final BotController bot;
-
-//    public void sendMessage(long chatId, String textToSend) {
-//        SendMessage message = new SendMessage();
-//        message.setChatId(chatId);
-//        message.setText(textToSend);
-//
-//        try {
-//            execute(message);
-//        } catch (TelegramApiException e) {
-////            log.error("Error occurred: " + e.getMessage());
-//        }
-//    }
-//}

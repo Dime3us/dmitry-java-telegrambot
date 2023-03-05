@@ -30,6 +30,15 @@ public class CurrencyService {
         double rate = jo.getJSONObject("rates").getDouble(to);
         return "1 " + from + " = " + rate + " " + to;
     }
+
+    public String getListOfAvailableCurrency() throws IOException {
+        String webService = "https://api.frankfurter.app/currencies";
+        String json = jsonReader.httpGetString(webService);
+        JSONObject jo = new JSONObject(json);
+        String list = jo.toString().replace('{', ' ').replace('}', ' ').
+                replaceAll(",", "\n");
+        return list;
+    }
 }
 
 

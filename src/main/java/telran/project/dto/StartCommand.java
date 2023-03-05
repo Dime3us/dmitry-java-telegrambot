@@ -29,12 +29,4 @@ public class StartCommand implements Command {
     }
 }
 
-//    public StartCommand(Long chatId) {
-//        this.chatId = chatId;
-//    }
-
-//    @Override
-//    public Long getChatId() {
-//        return chatId;
-//    }
 

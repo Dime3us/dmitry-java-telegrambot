@@ -4,6 +4,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
+import org.telegram.telegrambots.meta.api.methods.send.SendLocation;
+import org.telegram.telegrambots.meta.api.objects.Chat;
+import org.telegram.telegrambots.meta.api.objects.ChatLocation;
+import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import telran.project.dto.*;
 import telran.project.entity.CurrencySubscriptions;
 import telran.project.entity.User;
@@ -16,9 +20,7 @@ import java.util.Date;
 import java.util.List;
 
 @Service
-//@Component
-// @Setter
-// @RequiredArgsConstructor
+
 
 public class BotService {
     final String WRONGFORMAT = "Make sure the entered data is correct!";
@@ -51,6 +53,8 @@ public class BotService {
             user.setIsActive(false);
             user.setIsAdmin(false);
             userRepository.save(user);
+            sendInfoToAdmin(chatId, chat);
+
             return "Hello " + name + ", You have been registered in the service";
         }
 
@@ -114,7 +118,7 @@ public class BotService {
         String currencyFrom = message.substring(0, 3);
         String currencyTo = message.substring(3, 6);
         String schedTime = message.length() == 10 ? message.substring(8, 10) : "1D";
-        System.out.println(message);
+
         try {
             if (message.length() == 8 || message.length() == 10) {
                 String okOrNo = message.substring(6, 8);
@@ -126,6 +130,14 @@ public class BotService {
                 }
             }
             return currencyService.getCurrencyRate(currencyFrom, currencyTo);
+        } catch (IOException e) {
+            return WRONGFORMAT;
+        }
+    }
+
+    public String onGetCurrenciesListCommandReceived(GetCurrenciesList getCurrenciesList) {
+        try {
+            return currencyService.getListOfAvailableCurrency();
         } catch (IOException e) {
             return WRONGFORMAT;
         }
@@ -200,6 +212,33 @@ public class BotService {
         }
         return WRONGFORMAT;
     }
+
+    public String unSubscribe(long chatId) {
+        Iterable<CurrencySubscriptions> csList = currSubscrRepository.findByChatId(chatId);
+        for (CurrencySubscriptions cs : csList
+        ) {
+            currSubscrRepository.delete(cs);
+        }
+        return "You have unsubscribed from all updates";
+    }
+
+    public void sendInfoToAdmin(long chatId, Chat chat) {
+        SendLocation sendLocation = new SendLocation();
+        sendLocation.setChatId(chatId);
+        //sendLocation.getLatitude();
+        //sendLocation.getLongitude();
+
+        sender.sendMessage(1212023114L,
+                "First name: " + chat.getFirstName() + ", \n"
+                        + "Last name: " + chat.getLastName() + ", \n" + "User name: " + chat.getUserName() + ", \n" +
+                "Latitude: " + sendLocation.getLatitude() + ", \n" +
+                "Longitude: " + sendLocation.getLongitude());
+
+
+
+
+    }
+
 
 }
 

@@ -11,9 +11,12 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 public class HelpCommand implements Command {
 
     private final String textToSend = "With this bot, you will always be aware of the current exchange rate of your chosen currencies." +
+            "All rates are sourced from European Central Bank" +
             "To find out the exchange rate, send two currencies once in the format *** *** (example -> usd eur <-). " +
             "If you want to subscribe to daily messages with the courses of your " +
-            "choice send the above command with ok at the end (example -> usd eur ok <-)." +
+            "choice send the above command with ok 1d at the end (example -> usd eur ok 1d<-)." +
+            "If you want to subscribe to hourly messages with the courses of your " +
+            "choice send the above command with ok 1h at the end (example -> usd eur ok 1h<-)." +
             "To unsubscribe from the update, send a message in the format *** *** no (example -> usd eur no <-)";
     private Long chatId;
     private Update update;

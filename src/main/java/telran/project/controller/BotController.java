@@ -9,16 +9,15 @@ import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.commands.SetMyCommands;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
+import org.telegram.telegrambots.meta.api.objects.Chat;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.commands.scope.BotCommandScopeDefault;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import telran.project.dto.*;
 import telran.project.entity.CurrencySubscriptions;
 import telran.project.repository.UserRepository;
-import telran.project.service.BotConfig;
-import telran.project.service.BotService;
-import telran.project.service.MenuCommandList;
-import telran.project.service.MessageSender;
+import telran.project.service.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -30,7 +29,7 @@ import java.util.Map;
 //@NoArgsConstructor
 
 @Service
-public class BotController extends TelegramLongPollingBot implements MessageSender {
+public class BotController extends TelegramLongPollingBot implements MessageSender{
     private Map<Long, String> subscriptions = new HashMap<>();
     @Autowired
     private BotService service;
@@ -102,8 +101,16 @@ public class BotController extends TelegramLongPollingBot implements MessageSend
                         answer = service.onHelpCommandReceived(new HelpCommand(update));
                         sendMessage(chatId, answer);
                     }
-                    case "/admin" -> {
-                        answer = service.onSetAdminCommandReceived(new SetAdminCommand(update));
+//                    case "/admin" -> {
+//                        answer = service.onSetAdminCommandReceived(new SetAdminCommand(update));
+//                        sendMessage(chatId, answer);
+//                    }
+                    case "/list" -> {
+                        answer = service.onGetCurrenciesListCommandReceived(new GetCurrenciesList(update));
+                        sendMessage(chatId, answer);
+                    }
+                    case "/unsubscribe_all" -> {
+                        answer = service.unSubscribe(chatId);
                         sendMessage(chatId, answer);
                     }
                     default -> sendMessage(chatId, "Command not recognized");
